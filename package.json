@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/cristopher-rodrigues/projeto/issues"
   },
-  "homepage": "https://github.com/cristopher-rodrigues/projeto#readme"
+  "homepage": "https://github.com/cristopher-rodrigues/projeto#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
