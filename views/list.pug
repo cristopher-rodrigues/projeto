@@ -1,0 +1,15 @@
+html
+    head  
+        title Projeto lindo
+    body
+        h1 Users List
+        a(href="/users-form") Open Form
+
+        ul
+        each user, index in users
+            li= `${user.userName}-${user.userPhone}`
+            //- li= user.userName + "-" + user.userPhone
+            form(action=`/delete/${index}`, method="GET")
+                button(type="submit") Delete
+            a(href=`/users-edit/${index}`) Edit
+        

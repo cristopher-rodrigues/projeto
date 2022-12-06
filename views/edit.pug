@@ -1,0 +1,9 @@
+html
+    head  
+        title Projeto lindo
+    body
+        h1 Edit Users Form
+        form(action=`/edit/${index}`, method="POST")
+            input(type="text", value=user.userName, name="userName", placeholder="User Name")
+            input(type="text", value=user.userPhone, name="userPhone", placeholder="User Phone")
+            button(type="submit") Submit
