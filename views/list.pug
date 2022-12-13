@@ -8,8 +8,15 @@ html
         ul
         each user, index in users
             li= `${user.userName}-${user.userPhone}`
+                ul
+                    each children, cIndex in user.children
+                        li= children
+                            form(action=`/delete-children/${index}/${cIndex}`, method="GET")
+                                button(type="submit") Delete
+
             //- li= user.userName + "-" + user.userPhone
             form(action=`/delete/${index}`, method="GET")
                 button(type="submit") Delete
             a(href=`/users-edit/${index}`) Edit
+            a(href=`/users-edit/${index}/new-children`) Add Children
         

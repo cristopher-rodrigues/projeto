@@ -3,47 +3,75 @@ const bodyParser = require("body-parser");
 const res = require("express/lib/response");
 const app = express();
 const port = 3000;
+const deleteChildren = require("./controllers/children").deleteChildren;
+// const usersForm = require("./controllers/users").usersForm;
+// const usersList = require("./controllers/users").usersList;
+const UsersController = require("./controllers/users");
+const readUsers = require("./models/users").readUsers;
+const writeUsers = require("./models/users").writeUsers;
 
-var users = [];
+const redirectToList = (response) => response.redirect("/users-list");
 
 app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/users-form", (request, response) => {
-  response.render("form");
+app.get("/delete-children/:index/:childrenIndex", deleteChildren);
+
+app.get("/users-form", UsersController.usersForm);
+
+app.get("/users-edit/:index/new-children", (request, response) => {
+  response.render("new-children", { index: request.params.index });
 });
 
-app.get("/users-list", (request, response) => {
-  response.render("list", {
-    users,
-  });
+app.post("/new-children/:index", (request, response) => {
+  const users = readUsers();
+  users[request.params.index].children.push(request.body.childrenName);
+
+  writeUsers(users);
+
+  redirectToList(response);
 });
+
+app.get("/users-list", UsersController.usersList);
 
 app.get("/delete/:index", (request, response) => {
+  const users = readUsers();
+
   users.splice(request.params.index, 1);
 
-  response.redirect("/users-list");
+  writeUsers(users);
+
+  redirectToList(response);
 });
 
 app.get("/users-edit/:index", (request, response) => {
+  const users = readUsers();
   const user = users[request.params.index];
 
   response.render("edit", { user, index: request.params.index });
 });
 
 app.post("/edit/:index", (request, response) => {
+  const users = readUsers();
+
   users[request.params.index].userName = request.body.userName;
   users[request.params.index].userPhone = request.body.userPhone;
 
-  response.redirect("/users-list");
+  writeUsers(users);
+
+  redirectToList(response);
 });
 
 app.post("/submit", (request, response) => {
+  const users = readUsers();
+
   users.push(request.body);
 
-  response.redirect("/users-list");
+  writeUsers(users);
+
+  redirectToList(response);
 });
 
 app.listen(port, () => {

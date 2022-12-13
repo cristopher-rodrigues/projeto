@@ -1,0 +1,8 @@
+html
+    head  
+        title Projeto lindo
+    body
+        h1 Users Children Form
+        form(action=`/new-children/${index}`, method="POST")
+            input(type="text", name="childrenName", placeholder="Children Name")
+            button(type="submit") Submit
